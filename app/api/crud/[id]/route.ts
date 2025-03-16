@@ -59,7 +59,10 @@ async function deleteProducts(id: string) {
 }
 
 //buat get
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  rqeuest: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const id = params.id;
     const products = await fetchProducts(id);
@@ -67,9 +70,7 @@ export async function GET({ params }: { params: { id: string } }) {
   } catch (error) {
     console.error("Gagal fetch produk.", error);
     return NextResponse.json(
-      {
-        message: "Gagal fetch produk.",
-      },
+      { message: "Gagal fetch produk." },
       { status: 500 }
     );
   }
