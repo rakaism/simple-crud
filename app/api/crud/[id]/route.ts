@@ -60,7 +60,7 @@ async function deleteProducts(id: string) {
 
 //buat get
 export async function GET(
-  rqeuest: Request,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
