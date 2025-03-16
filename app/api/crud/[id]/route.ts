@@ -77,7 +77,10 @@ export async function GET(
 }
 
 //buat delete
-export async function DELETE({ params }: { params: { id: string } }) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const id = params.id;
     await deleteProducts(id);
