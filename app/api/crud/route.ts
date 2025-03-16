@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 const database = new Databases(client);
 
-//create
+// create
 async function createProducts(data: {
   name: string;
   category: string;
@@ -19,13 +19,13 @@ async function createProducts(data: {
       data
     );
     return response;
-  } catch (error) {
-    console.error("Gagal membuat produk", error);
+  } catch (_error) {
+    console.error("Gagal membuat produk", _error);
     throw new Error("Gagal membuat produk baru");
   }
 }
 
-//fetch
+// fetch
 async function fetchProducts() {
   try {
     const response = await database.listDocuments(
@@ -34,39 +34,35 @@ async function fetchProducts() {
       [Query.orderDesc("$createdAt")]
     );
     return response.documents;
-  } catch (error) {
-    console.error("Gagal fetch produk", error);
+  } catch (_error) {
+    console.error("Gagal fetch produk", _error);
     throw new Error("Gagal fetch produk baru");
   }
 }
 
-//create post
+// create post
 export async function POST(req: Request) {
   try {
     const { name, category, price, color } = await req.json();
     const data = { name, category, color, price };
-    const response = await createProducts(data);
+    const createdProduct = await createProducts(data);
     return NextResponse.json({ message: "Produk berhasil dibuat." });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      {
-        message: "Gagal membuat produk.",
-      },
+      { message: "Gagal membuat produk." },
       { status: 500 }
     );
   }
 }
 
-//list gate
-export async function GET(req: Request) {
+// list gate
+export async function GET(_req: Request) {
   try {
     const products = await fetchProducts();
     return NextResponse.json(products);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      {
-        message: "Gagal fetch produk.",
-      },
+      { message: "Gagal fetch produk." },
       { status: 500 }
     );
   }

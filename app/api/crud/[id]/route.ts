@@ -67,7 +67,7 @@ export async function GET(
     const id = params.id;
     const products = await fetchProducts(id);
     return NextResponse.json(products);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         message: "Gagal fetch produk.",
@@ -88,7 +88,7 @@ export async function DELETE(
     return NextResponse.json({
       message: "Berhasil hapus produk",
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         message: "Gagal menghapus produk.",
@@ -110,7 +110,7 @@ export async function PUT(
     return NextResponse.json({
       message: "Berhasil update produk.",
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         message: "Gagal update produk.",

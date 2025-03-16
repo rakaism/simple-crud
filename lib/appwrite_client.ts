@@ -1,4 +1,4 @@
-import { Client, Databases } from "appwrite";
+import { Client } from "appwrite";
 
 const client = new Client()
   .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT as string) // Your API Endpoint
