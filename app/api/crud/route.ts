@@ -19,8 +19,8 @@ async function createProducts(data: {
       data
     );
     return response;
-  } catch (_error) {
-    console.error("Gagal membuat produk", _error);
+  } catch (error) {
+    console.error("Gagal membuat produk", error);
     throw new Error("Gagal membuat produk baru");
   }
 }
@@ -34,8 +34,8 @@ async function fetchProducts() {
       [Query.orderDesc("$createdAt")]
     );
     return response.documents;
-  } catch (_error) {
-    console.error("Gagal fetch produk", _error);
+  } catch (error) {
+    console.error("Gagal fetch produk", error);
     throw new Error("Gagal fetch produk baru");
   }
 }
@@ -45,9 +45,10 @@ export async function POST(req: Request) {
   try {
     const { name, category, price, color } = await req.json();
     const data = { name, category, color, price };
-    const createdProduct = await createProducts(data);
+    await createProducts(data);
     return NextResponse.json({ message: "Produk berhasil dibuat." });
-  } catch (_error) {
+  } catch (error) {
+    console.error("Gagal membuat produk.", error);
     return NextResponse.json(
       { message: "Gagal membuat produk." },
       { status: 500 }
@@ -60,7 +61,8 @@ export async function GET() {
   try {
     const products = await fetchProducts();
     return NextResponse.json(products);
-  } catch (_error) {
+  } catch (error) {
+    console.error("Gagal fetch produk.", error);
     return NextResponse.json(
       { message: "Gagal fetch produk." },
       { status: 500 }
