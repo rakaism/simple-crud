@@ -1,22 +1,47 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 
-export default function Create() {
+export default function Update() {
+  const params = useParams();
+  const id = params?.id as string;
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     category: "",
     color: "",
     price: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`/api/crud/${id}`);
+        if (!response.ok) {
+          throw new Error("Gagal fetch produk.");
+        }
+        const data = await response.json();
+        console.log(data);
+        setFormData({
+          name: data.name,
+          category: data.category,
+          color: data.color,
+          price: data.price,
+        });
+      } catch (error) {
+        setError("Failed fetch data produk.");
+      }
+    };
+    if (id) {
+      fetchProducts();
+    }
+  }, [id]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
@@ -44,20 +69,21 @@ export default function Create() {
     };
 
     try {
-      const response = await fetch("/api/crud", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
+      const response = await fetch(`/api/crud/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
-
       if (!response.ok) {
-        throw new Error("Gagal menginput produk.");
+        throw new Error("Gagal mengupdate produk.");
       }
 
       router.push("/list");
     } catch (error) {
-      console.error("Gagal membuat produk.", error);
-      setError("Gagal membuat produk.");
+      console.error("Gagal mengupdate produk", error);
+      setError("Gagal update produk.");
     } finally {
       setIsLoading(false);
     }
@@ -145,7 +171,7 @@ export default function Create() {
           disabled={isLoading}
           className="mx-auto flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          {isLoading ? "Adding..." : "Submit"}
+          {isLoading ? "Updating..." : "Submit"}
         </button>
       </form>
       {error && <p className="text-red-500 mt-4">{error}</p>}

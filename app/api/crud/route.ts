@@ -9,12 +9,12 @@ async function createProducts(data: {
   name: string;
   category: string;
   color: string;
-  price: BigInteger;
+  price: number;
 }) {
   try {
     const response = await database.createDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "67bbe09a0038eec99008",
+      process.env.NEXT_PUBLIC_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_TABLE_ID as string,
       ID.unique(),
       data
     );
@@ -29,8 +29,8 @@ async function createProducts(data: {
 async function fetchProducts() {
   try {
     const response = await database.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "67bbe09a0038eec99008",
+      process.env.NEXT_PUBLIC_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_TABLE_ID as string,
       [Query.orderDesc("$createdAt")]
     );
     return response.documents;

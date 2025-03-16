@@ -1,7 +1,6 @@
 import client from "@/lib/appwrite_client";
 import { Databases } from "appwrite";
 import { NextResponse } from "next/server";
-import { json } from "stream/consumers";
 
 const database = new Databases(client);
 
@@ -9,8 +8,8 @@ const database = new Databases(client);
 async function fetchProducts(id: string) {
   try {
     const products = await database.getDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "67bbe09a0038eec99008",
+      process.env.NEXT_PUBLIC_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_TABLE_ID as string,
       id
     );
     return products;
@@ -32,8 +31,8 @@ async function updateProducts(
 ) {
   try {
     const response = await database.updateDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "67bbe09a0038eec99008",
+      process.env.NEXT_PUBLIC_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_TABLE_ID as string,
       id,
       data
     );
@@ -48,8 +47,8 @@ async function updateProducts(
 async function deleteProducts(id: string) {
   try {
     const response = await database.deleteDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "67bbe09a0038eec99008",
+      process.env.NEXT_PUBLIC_DATABASE_ID as string,
+      process.env.NEXT_PUBLIC_TABLE_ID as string,
       id
     );
     return response;
