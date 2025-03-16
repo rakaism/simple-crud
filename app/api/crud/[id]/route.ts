@@ -59,15 +59,13 @@ async function deleteProducts(id: string) {
 }
 
 //buat get
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET({ params }: { params: { id: string } }) {
   try {
     const id = params.id;
     const products = await fetchProducts(id);
     return NextResponse.json(products);
-  } catch (_error) {
+  } catch (error) {
+    console.error("Gagal fetch produk.", error);
     return NextResponse.json(
       {
         message: "Gagal fetch produk.",
@@ -78,17 +76,15 @@ export async function GET(
 }
 
 //buat delete
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE({ params }: { params: { id: string } }) {
   try {
     const id = params.id;
     await deleteProducts(id);
     return NextResponse.json({
       message: "Berhasil hapus produk",
     });
-  } catch (_error) {
+  } catch (error) {
+    console.error("Gagal hapus produk", error);
     return NextResponse.json(
       {
         message: "Gagal menghapus produk.",
@@ -110,7 +106,8 @@ export async function PUT(
     return NextResponse.json({
       message: "Berhasil update produk.",
     });
-  } catch (_error) {
+  } catch (error) {
+    console.error("Gagal update produk", error);
     return NextResponse.json(
       {
         message: "Gagal update produk.",

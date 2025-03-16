@@ -43,7 +43,7 @@ export default function List() {
         prevProducts.filter((product) => product.$id !== id)
       );
     } catch (error) {
-      console.log(error);
+      console.error("Gagal hapus produk.", error);
       setError("Gagal menghapus produk.");
     }
   };

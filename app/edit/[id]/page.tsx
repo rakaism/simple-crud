@@ -33,7 +33,7 @@ export default function Update() {
           price: data.price,
         });
       } catch (error) {
-        console.error("Gagal fetch data produk.");
+        console.error("Gagal fetch data produk.", error);
         setError("Failed fetch data produk.");
       }
     };

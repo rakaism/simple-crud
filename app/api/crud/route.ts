@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 }
 
 // list gate
-export async function GET(_req: Request) {
+export async function GET() {
   try {
     const products = await fetchProducts();
     return NextResponse.json(products);
